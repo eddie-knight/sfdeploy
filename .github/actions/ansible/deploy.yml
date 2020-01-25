@@ -17,3 +17,14 @@
         command:
           chdir: /code
           cmd: docker-compose up -d
+
+      - name: Wait until URL is reachable from this host
+          uri:
+            url: "http://{{ inventory_hostname }}"
+            follow_redirects: none
+            method: GET
+          register: _result
+          until: _result.status == 200
+          retries: 24 # 24 * 5 seconds = 2 minutes
+          delay: 5 # Every 5 seconds
+        
