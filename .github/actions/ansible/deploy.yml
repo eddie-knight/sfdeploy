@@ -1,0 +1,19 @@
+---
+
+  - name: Test compose
+    connection: ssh
+    gather_facts: False
+    hosts: all
+    tasks:
+      - name: Copy code to remote hosts
+        copy:
+          force: yes
+          src: ./code/
+          dest: /code
+          mode: 0770
+          group: docker
+
+      - name: Basic compose up
+        command:
+          chdir: /code
+          cmd: docker-compose up -d
