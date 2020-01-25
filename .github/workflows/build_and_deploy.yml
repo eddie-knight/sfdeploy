@@ -1,0 +1,15 @@
+
+name: Docker Image CI
+
+on: [pull_request]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v1
+        - name: Set Ansible Credentials
+          run: |
+            echo "${{ secrets.SSH_KEY }}" > ./.github/actions/ansible/key
+            echo "${{ secrets.VAULT_PASSWORD }}" > ./.github/actions/ansible/password
+        - uses: ./.github/actions/ansible
